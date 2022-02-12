@@ -1,0 +1,105 @@
+{% extends "adminTempl/admin_main.html" %}
+{% block content %}
+
+
+
+
+
+<div class="container-fluid">
+    <div class=" mt-5 ">
+        <h1 class="">Order table</h1>
+
+    </div>
+    <table id="myTable" class="display">
+        <thead>
+            <tr>
+                <th>username</th>
+                <th>product name</th>
+                <th>total quantity ordered</th>
+                <th>subtotal</th>
+                <th>address</th>
+                <th>date</th>
+                <th>order_status</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in order %}
+            <tr>
+                <td>{{i.userId_id__username}}</td>
+                <td>{{i.variant_id__product_id__brand_id__brand_name}}  {{i.variant_id__product_id__product_name}}({{i.variant_id__variant}}GB)</td>
+                <td>{{i.total_qty}}</td>
+                <td>{{i.subtotal}}</td>
+                <td>{{i.address}}</td>
+                <td>{{i.date}}</td>
+                <td id="td{{i.id}}">
+                    {% if i.order_status == "Cancelled" %}
+                    order canelled by user
+                    {% elif i.order_status == "Delivered" %}
+                    product Delivered
+                    {% elif i.order_status == "Returned" %}
+                    Product Returned
+                    {% elif i.order_status == "Admin cancell" %}
+                    Admin cancell
+                    {% else %}
+                    <select class="browser-default custom-select" id="selTag{{i.id}}" oninput="selected({{i.id}})">
+                        <option >{{i.order_status}}</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Admin cancell">cancel</option>
+                    </select>
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}    
+
+        </tbody>
+    </table>
+</div>
+
+
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    select {
+        display: none;
+    }
+</style>
+
+<script>
+
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+    // Material Select Initialization
+    $(document).ready(function () {
+        $('.mdb-select').materialSelect();
+    });
+</script>
+
+{% endblock %}

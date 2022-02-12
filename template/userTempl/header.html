@@ -1,0 +1,165 @@
+{% load static %}
+<header class="header navbar-area">
+
+
+
+
+    <div class="header-middle">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-3 col-7">
+
+                    <a class="navbar-brand" href="/">
+                        <h3>SmartShop</h3>
+                    </a>
+
+                </div>
+                <div class="col-lg-5 col-md-7 d-xs-none">
+
+                    <div class="main-menu-search">
+
+                        <div class="navbar-search search-style-5">
+                            <form action="/search" method="get" class="d-flex w-100">
+                                <div class="search-input">
+                                    <input type="text" placeholder="Search" id="search-val" name="input" required>
+                                </div>
+                                <div class="search-btn">
+                                    <button type="submit"><i class="lni lni-search-alt"></i></button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-lg-4 col-md-2 col-5">
+                    <div class="middle-right-area">
+                        <div class="nav-hotline d-flex">
+                            {% if not session %}
+                            <a href="login" class="btn bg-primary text-light d-none d-md-block">Login</a>
+                            <a href="register" class="btn bg-primary text-light ms-2 d-none d-md-block">Register</a>
+                            {% else %}
+                            <a href="/userlogout" class="btn bg-primary text-light d-none d-md-block">Logout</a>
+                            {% endif %}
+                        </div>
+                        <div class="navbar-cart">
+                            <div class="wishlist">
+                                <a href="/profile" class="d-flex justify-content-center align-items-center">
+                                    <span class="material-icons">
+                                        account_circle
+                                    </span>
+                                </a>
+                            </div>
+                            <!-- <div class="wishlist">
+                                <a href="javascript:void(0)">
+                                    <i class="lni lni-heart"></i>
+                                    <span class="total-items">0</span>
+                                </a>
+                            </div> -->
+                            <div class="cart-items">
+                                <a href="/mycart" class="main-btn">
+                                    <i class="lni lni-cart"></i>
+                                    <span class="total-items" id="cart-count">{{cart_count}}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="container">
+        <div class="row align-items-center" style="width: inherit;">
+            <div class="col-lg-8 col-md-6 col-12">
+                <div class="nav-inner">
+
+                    <div class="mega-category-menu">
+                        <span class="cat-button"><i class="lni lni-menu"></i>All Categories</span>
+                        <ul class="sub-category">
+                            {% for i in category %}
+                            <li>
+                                <a href="/productlist?c_id={{i.id}}">{{i}}<i class="lni lni-chevron-right"></i>
+                                </a>
+                                <ul class="inner-sub-category">
+                                    {% for a in subcat %}
+                                    {% if i.id == a.c_id__id %}
+                                    <li><a href="/productlist?sub_id={{a.id}}">{{a.brand_name}}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            {% endfor %}
+
+                            <li><a href="/profile">Orders</a></li>
+                            <li><a href="/productlist">Filter Page</a></li>
+                            <li><a href="/userlogout">Logout</a></li>
+                        </ul>
+                    </div>
+
+
+                    <nav class="navbar navbar-expand-lg" style="box-shadow: none;">
+                        <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                            <ul id="nav" class="navbar-nav ms-auto">
+                                <li class="nav-item">
+                                    <a href="/" class="active" aria-label="Toggle navigation">Home</a>
+                                </li>
+
+                                {% for i in category %}
+                                <li class="nav-item">
+                                    <a class="dd-menu collapsed" href="/productlist?c_id={{i.id}}" data-bs-toggle="collapse"
+                                        data-bs-target="#submenu-1-2" aria-controls="navbarSupportedContent"
+                                        aria-expanded="false" aria-label="Toggle navigation">{{i}}</a>
+                                    <ul class="sub-menu collapse" id="submenu-1-2">
+                                        {% for a in subcat %}
+                                        {% if i.id == a.c_id__id %}
+                                        <li class="nav-item"><a href="/productlist?sub_id={{a.id}}">{{a.brand_name}}</a></li>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endfor %}
+
+
+                                <li class="nav-item">
+                                        <a href="/orderdetails" class="" aria-label="Toggle navigation">orders</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="/productlist" class="" aria-label="Toggle navigation">Filter page</a>
+                                </li>
+                            
+                            </ul>
+                        </div>
+                    </nav>
+
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+
+                <div class="nav-social">
+                    {% if request.session.user %}
+                    <h5 class="title">Hello: {{ request.session.user }}</h5>
+                    {% else %}
+                    <h5 class="title">Guest user mode</h5>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+</header>

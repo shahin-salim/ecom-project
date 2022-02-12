@@ -1,0 +1,109 @@
+{% extends "adminTempl/admin_main.html" %}
+{% block content %}
+
+
+
+<section class="row">
+
+    <div class="table-responsive">
+
+        <div class=" my-3 ">
+
+            <div class="row">
+                <h3 class="h3 text-center col-12">Coupen manangement</h3>
+                <div class="col-md-6 px-5">
+                    <a href="/admin_side/addcoupen" class="btn col-md-6">Add Coupen</a>
+                </div>
+                <div class="col-md-6 px-5">
+                    <form action="/admin_side/coupenmanagement" method="get" class="d-flex">
+                        <input type="text" name="search" id="" class="form-control">
+                        <button type="submit" class="btn bg-primary text-light ms-2">search</button>
+                    </form>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <table  class="table  table-hover">
+            <thead>
+                <tr>
+                    <th>coupen code</th>
+                    <th>offer(%)</th>
+                    <th>update</th>
+                    <th>remove</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for i in coupen %}
+                <tr>
+                    <td>{{i.coupen_code}}</td>
+                    
+                    <td>{{i.coupen_offer}} </td>
+                    <td>
+                        <a class="btn btn-primary" href="/admin_side/addcoupen?id={{i.id}}">update</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" href="/admin_side/addcoupen?id={{i.id}}&remove=True">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="d-flex justify-content-center">
+    <nav aria-label="...">
+        <ul class="pagination">
+         {% if coupen.has_previous %}
+          <li class="page-item ">
+            <a class="page-link" href="?page={{coupen.previous_page_number}}">prevous</a>
+          </li>
+          {% endif %}
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#">{{coupen.number}} <span class="visually-hidden"></span></a>
+          </li>
+          {% if coupen.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{coupen.next_page_number}}">Next</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      
+</div>
+
+
+{% endblock %}

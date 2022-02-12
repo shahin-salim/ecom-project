@@ -1,0 +1,76 @@
+{% extends "userTempl/usermain.html" %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+<form method="post" action="{{url}}" enctype="multipart/form-data" class="d-flex justify-content-center pb-5"
+     novalidate>
+     {% csrf_token %}
+    <div class="container">
+     <div class="row">
+          {% if address_id %}
+          <h1 class="text-center">Edit Address</h1>
+          {% else %}
+          <h1 class="text-center">Register</h1>
+          {% endif %}
+          <p class="text-danger">{{err}}</p>
+
+          {% for i in form %}
+          <div class="col-md-6">
+               {{i|as_crispy_field}}
+          </div>
+          {% endfor %}
+          <div class="mt-3">
+          {% if address_id %}
+          <input type="hidden" value="{{currentUrl}}" name="currentUrl">
+          <button type="submit" class="btn bg-primary text-light w-100" value="{{address_id}}" name="address_id">Update Address</button>
+          {% else %}
+          <button type="submit" class="btn bg-primary text-light w-100" >submit</button>
+          {% endif %}
+          </div>
+     </div>
+    </div>
+</form>
+
+<style>
+     #hint_id_password1 {
+          display: none;
+     }
+
+     #hint_id_username {
+          display: none;
+     }
+</style>
+<script>
+     function checkValid(id) {
+          num = $(id).val()
+          if (/^\d+$/.test(num) == false) {
+               let sub = num.substring(0, num.length - 1)
+               $(id).val(sub)
+          }
+     }
+
+     $("#id_number").on("keyup input", function () {
+          console.log('/')
+          checkValid("#id_number")
+     })
+     $("#id_mobile_number").on("input", function(){
+          var val = $("#id_mobile_number").val()
+          if (/^\d+$/.test(val) == false){
+              a =  val.substring(0, val.length - 1);
+              $("#id_mobile_number").val(a)
+          }
+     })
+     $("#id_zipcode").on("input", function(){
+          var val = $("#id_zipcode").val()
+          if (/^\d+$/.test(val) == false){
+              a =  val.substring(0, val.length - 1);
+              $("#id_zipcode").val(a)
+          }
+     })
+</script>
+
+
+
+{% endblock %}

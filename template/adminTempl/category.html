@@ -1,0 +1,142 @@
+{% extends "adminTempl/admin_main.html" %}
+{% block content %}
+
+
+
+<section class="row">
+
+    <div class="container-fluid col-12">
+
+        <div class=" mt-5 ">
+            <h1 class="">Category</h1>
+            <a href="/admin_side/addcategory" class="btn bg-warning text-light m-4" style="height: fit-content;">Add
+                category</a>
+
+        </div>
+        <table id="myTable" class="display">
+            <thead>
+                <tr>
+                    <th>category name</th>
+                    <th>update category</th>
+                    <th>delete category</th>
+
+
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for i in category %}
+                <tr>
+                    <td>{{i.category}}</td>
+                    <td><a href="/admin_side/updatecategory?id={{i.id}}" class="btn bg-primary text-light">Update</a>
+                    </td>
+                    <td>
+
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary"
+                            onclick="popup('/admin_side/deletecategory?id={{i.id}}')" data-toggle="modal">
+                            Delete
+                        </button>
+
+                        <!-- Modal -->
+
+
+
+
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <div class="container-fluid col-12">
+
+        <div class=" mt-5 ">
+            <h1>Sub Category</h1>
+            <a href="/admin_side/addsubcategory" class="btn bg-warning text-light m-4" style="height: fit-content;">Add
+                sub category</a>
+
+        </div>
+        <table id="myTable2" class="display">
+            <thead>
+                <tr>
+                    <th>sub category name</th>
+                    <th>category</th>
+                    <th>update category</th>
+                    <th>delete category</th>
+
+
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for i in subcategory %}
+                <tr>
+                    <td>{{i.brand_name}}</td>
+                    <td>{{i.c_id.category}}</td>
+                    <td><a href="/admin_side/updatesubcategory?id={{i.id}}" class="btn bg-primary text-light">Update</a>
+                    </td>
+                    <td>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary"
+                            onclick="popup('/admin_side/deletesubcategory?id={{i.id}}')" data-toggle="modal">
+                            Delete
+                        </button>
+                        <!-- Modal -->
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    select {
+        display: none;
+    }
+</style>
+
+<script>
+
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+    $(document).ready(function () {
+        $('#myTable2').DataTable();
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends "adminTempl/admin_main.html" %}
+{% block content %}
+
+
+
+<section class="row">
+
+    <div class="table-responsive">
+
+        <div class="row mb-3">
+            <h3 class="h3 text-center col-12">Category offer</h3>
+            <div class="col-md-6 px-5">
+                <form action="/admin_side/categoryoffer" method="get" class="d-flex">
+                    <input type="text" name="search" id="" class="form-control">
+                    <button type="submit" class="btn bg-primary text-light ms-2">search</button>
+                </form>
+            </div>
+        </div>
+        <table class="table  table-hover">
+            <thead>
+                <tr>
+                    <th>category name</th>
+                    <th>offer(%)</th>
+                    <th>set offer</th>
+                    <th>remove offer</th>
+
+
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for i in category %}
+                <tr>
+                    <td>{{i.category}}</td>
+
+                    <td>
+                        {% if  i.offer %}
+                        {{i.offer}}
+                        {% else %}
+                        No offer
+                        {% endif %}
+                        
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn btn-primary set-offer-btn" data-mdb-toggle="modal"
+                            data-mdb-target="#exampleModal" data-mdb-whatever="@mdo" data-id={{i.id}} data-offer={% if i.offer %}{{i.offer}}{% endif %}>
+                            set
+                        </button>
+                    </td>
+
+
+                    <td>
+                        {% if i.offer  %}
+                        <a href="/admin_side/addcategoryoffer?id={{i.id}}" class="btn btn-primary">Remove</a>
+                        {% endif %}
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="offerforcategory" action="/admin_side/addcategoryoffer">
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Offer(%)</label>
+                            <input type="text" name="offer" class="form-control" id="category-offer" placeholder="10%" />
+                            <input type="hidden"  name="id" value="" id="c-id">
+                            <p id="cate-offer-err"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="submit-btn">Send message</button>
+                        </div>
+                        
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <script>
+    $(".set-offer-btn").on('click', function(){
+
+        $("#c-id").val($(this).attr('data-id'))
+        $("#category-offer").val($(this).attr('data-offer'))
+    })
+
+    $("#offerforcategory").submit((e) => {
+        e.preventDefault()
+        val = $("#category-offer").val()
+        if (val == ""){
+            $("#cate-offer-err").html('fill this field')
+        }else if(/^\d+$/.test(val) == false){
+            err = ''
+            $("#cate-offer-err").html('only number allowded')
+        }else if(val < 1){
+            $("#cate-offer-err").html('number must be grater that 0')
+        }else if(val > 100){
+            $("#cate-offer-err").html('number must be less that 100')
+
+        }else{
+            $("#offerforcategory").submit()
+        }
+    })
+
+  </script>
+
+
+
+    {% endblock %}

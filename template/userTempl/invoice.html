@@ -1,0 +1,277 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>SmartShop</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="{% static 'userAddon/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/LineIcons.3.0.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/glightbox.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/main.css' %}" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css" rel="stylesheet" />
+
+    <style>
+        .navbar{
+            box-shadow: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+        <!-- Preloader -->
+        <!-- <div class="preloader">
+            <div class="preloader-inner">
+                <div class="preloader-icon">
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div> -->
+        <!-- /End Preloader -->
+    {% include 'userTempl/header.html' %}
+
+
+
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">Shop Grid</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="/"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="javascript:void(0)">checkout</a></li>
+                        <li>Invoice</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="container mb-5 mt-5  border border-primary" id="printDiv">
+        <div class="card">
+            <div class="card-body">
+                <div class=" mb-5 mt-3">
+
+
+                    <div class="">
+                        <div class="col-md-12">
+
+                            <div class="text-center">
+                                <h3>Invoice</h3>
+                                <div class="d-md-flex justify-content-end">
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-xl-8">
+                                <ul class="list-unstyled">
+                                    <li class="text-muted">To: <span
+                                            style="color:#5d9fc5 ;"></span></li>
+                                    <li class="text-muted" style="width: 9rem;">{{oneorder.address}}</li>
+
+                                </ul>
+                            </div>
+                            <div class="col-xl-4">
+                                <p class="text-muted">Invoice</p>
+                                <ul class="list-unstyled">
+
+                                    <li class="text-muted"><i class="fas fa-circle" style="color:#84B0CA ;"></i> <span
+                                            class="fw-bold">Creation Date: </span>{{oneorder.date}}</li>
+                                    <li class="text-muted"><i class="fas fa-circle" style="color:#84B0CA ;"></i> <span
+                                            class="me-1 fw-bold">Status:</span>
+                                        {% if oneorder.payment_method == "Cash On Delivery" %}
+                                        <span class="badge bg-warning text-black fw-bold">Unpaid</span>
+                                        {% else %}
+                                        <span class="badge bg-warning text-black fw-bold">Paid</span>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table ">
+                                <thead style="background-color:#84B0CA ;" class="text-white">
+                                    <tr class="">
+                                        <th scope="col" class="d-none d-md-block">order id</th>
+                                        <th scope="col">product name</th>
+                                        <th scope="col">Qty</th>
+                                        <th scope="col">subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in order %}
+                                    <tr class="">
+                                        <th class="col d-none d-md-block">{{i.order_id}}</th>
+                                        <td class="col">{{i.variant_id__product_id__brand_id__brand_name}}
+                                            {{i.variant_id__product_id__product_name}}
+                                            ({{i.variant_id__variant}} GB) 
+                                        </td>
+                                        <td class="col">{{i.total_qty}}</td>
+                                        <td class="col">{{i.subtotal}}</td>
+                                    </tr>
+                                    {% endfor %}
+
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <div class="row p-3">
+                            <div class="d-md-flex justify-content-end">
+                                <h4 class="text-center">Total ₹{{total.subtotal__sum}}</h4>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-center">Thank you for your purchase</p>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="/" class="btn bg-primary text-light" id="go-to-home">Go to home</a>
+                                <button class="btn" id="doPrint">print</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    {% include 'userTempl/footer.html' %}
+    <style>
+        table tbody tr td {
+            text-align: center;
+        }
+    </style>
+
+
+    <a href="#" class="scroll-top">
+        <i class="lni lni-chevron-up"></i>
+    </a>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'userAddon/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'userAddon/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'userAddon/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'userAddon/js/main.js' %}"></script>
+    <script src="{% static 'userAddon/js/addToCart.js' %}"></script>
+
+
+    <!-- MDB -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+
+    <script>
+        document.getElementById("doPrint").addEventListener("click", function () {
+            var printContents = document.getElementById('printDiv').innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+
+        });
+    </script>
+
+    <script>
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Order placed successfully',
+        })  
+    </script>
+    <script>
+        history.pushState(null, null, location.href);
+        history.back();
+        history.forward();
+        window.onpopstate = function () { history.go(1); };
+    </script>
+
+</body>
+
+
+</html>
+
+
+<!-- 
+# all the checkout operatons are calculated here
+def CartCalc(request, address_id, payMethod, coupenId=0):
+    limit = 0
+    u_id = CustomUser.objects.get(username=request.session['user'])
+    cartItems = cart.objects.filter(user_id=u_id)
+
+    coupenData = 0
+
+
+    if coupenId:
+        coupenData = Coupen.objects.get(id=coupenId)        
+    cart_subtoal = 0
+    print(coupenData)
+    for i in cartItems:
+        if i.quantity <= i.variant_id.quantity and not i.variant_id.quantity <= 0:
+            cart_subtoal += i.subtotal
+            totalqty = i.quantity
+            addr = address.objects.get(id=address_id)
+            addre =  'Full name: ' + str(
+                addr.full_name
+                ) + ' address: ' + str(
+                    addr.address
+                    ) + ' city: ' + str(
+                        addr.city
+                        ) + ' pincode: ' + str(
+                            addr.zipcode
+                            ) + ' mobile: ' + str(
+                                addr.mobile_number
+                                )
+
+            print(totalqty)
+            orders = order()
+            orders.total_qty  = totalqty
+            orders.address = addre
+            orders.userId = u_id
+            orders.variant_id = i.variant_id
+            orders.payment_method = payMethod
+            if coupenId:
+                orders.subtotal = i.subtotal - (i.subtotal * coupenData.coupen_offer) / 100
+                orders.coupen_id = coupenData
+            else:
+                orders.subtotal = i.subtotal
+            orders.save()
+            
+            v = VariantAndPrice.objects.get(id=i.variant_id_id)
+            v.quantity = i.variant_id.quantity - i.quantity
+            v.save()
+            i.delete()
+            limit += 1
+    return limit -->

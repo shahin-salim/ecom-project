@@ -1,0 +1,41 @@
+{% extends "userTempl/usermain.html" %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+<form method="post">
+    {% csrf_token %}
+    {% load crispy_forms_tags %}
+
+    {{ form|crispy }}
+    <button type="submit">Save changes</button>
+  </form>
+
+<style>
+     #hint_id_password1 {
+          display: none;
+     }
+
+     #hint_id_username {
+          display: none;
+     }
+</style>
+<script>
+     function checkValid(id) {
+          num = $(id).val()
+          if (/^\d+$/.test(num) == false) {
+               let sub = num.substring(0, num.length - 1)
+               $(id).val(sub)
+          }
+     }
+
+     $("#id_number").on("keyup input", function () {
+          console.log('/')
+          checkValid("#id_number")
+     })
+</script>
+
+
+
+{% endblock %}

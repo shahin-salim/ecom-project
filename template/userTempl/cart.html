@@ -1,0 +1,230 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>SmartShop</title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="stylesheet" href="{% static 'userAddon/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'userAddon/css/LineIcons.3.0.css' %}" />
+  <link rel="stylesheet" href="{% static 'userAddon/css/tiny-slider.css' %}" />
+  <link rel="stylesheet" href="{% static 'userAddon/css/glightbox.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'userAddon/css/main.css' %}" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="sweetalert2.min.css">
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <style>
+    .swal2-cancel {
+      margin-right: 1rem !important;
+    }
+
+      #main-row div{
+        display: flex;
+        align-items: center;
+      }
+      @media only screen and (max-width: 727px) {
+        #main-row div{
+          justify-content: center;
+        }
+      }
+
+
+  </style>
+
+</head>
+
+<body>
+
+  {% include 'userTempl/header.html' %}
+
+
+  <div class="breadcrumbs">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 col-md-6 col-12">
+          <div class="breadcrumbs-content">
+            <h1 class="page-title">Cart</h1>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-12">
+          <ul class="breadcrumb-nav">
+            <li><a href="/"><i class="lni lni-home"></i> Home</a></li>
+            <li>Cart</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="shopping-cart section">
+    <div class="container">
+      <div class="cart-list-head">
+
+        <div class="cart-list-title d-none d-md-block">
+          <div class="row">
+            <div class="col-lg-1 col-md-1 col-12">
+            </div>
+            <div class="col-lg-4 col-md-3 col-12">
+              <p>Product Name</p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-12">
+              <p>Quantity</p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-12">
+              <p>Subtotal</p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-12">
+              <p>Discount</p>
+            </div>
+            <div class="col-lg-1 col-md-2 col-12">
+              <p>Remove</p>
+            </div>
+          </div>
+        </div>
+
+
+        {% for cart in cartItems %}
+
+
+        <div class="cart-single-list" id="product{{cart.id}}">
+          <div class="row " id="main-row">
+            <div class="col-lg-1 col-md-1 col-12">
+              <a href='/eachproduct?p_id={{cart.variant_id.product_id.id}}'><img
+                  src="{{cart.variant_id.product_id.img1.url}}" alt="#" style="height: 6rem;width: 2rem;"></a>
+            </div>
+            <div class="col-lg-4 col-md-3 col-12" id="product-flex" style="display: block;">
+              <h5 class="product-name"><a href="product-details.html">
+                  {{cart.variant_id.product_id.brand_id}} {{cart.variant_id.product_id.product_name}}</a></h5>
+              <p class="product-des">
+                <span><em>Varaint:</em> {{cart.variant_id.variant}}GB RAM </span>
+              </p>
+              <p class="product-des">
+                <span class="text-danger " id="maxlimit{{cart.id}}" data-maxqty={{cart.variant_id.quantity}}>
+                  <em class="text-danger h3">
+                    {% if cart.variant_id.quantity %}
+                    Quantity left:{{cart.variant_id.quantity}}
+                    {% else %}
+                    Out of stock
+                    {% endif %}
+                  </em>
+
+                </span>
+              </p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-12 d-flex  justify-content-center">
+              <div class="count-input d-flex">
+                <button class="btn update-btn incre&decre" data-type="-1" data-cartId="{{cart.id}}" >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                    class="bi bi-dash-square-fill" viewBox="0 0 16 16">
+                    <path
+                      d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm2.5 7.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1z" />
+                  </svg>
+                </button>
+
+                <input class="text-center" type="text" id="qty-input{{cart.id}}" value="{{cart.quantity}}"
+                   disabled style="height: 2rem; width: 2rem;">
+
+                <button class="btn update-btn" data-type="1" data-cartId="{{cart.id}}"
+                  data-inputId="#qty-input{{cart.id}}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                    class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                    <path
+                      d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-12">
+              <p>₹<span class="price" id="Subtotal{{cart.id}}">{{cart.subtotal}}</span></p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-12">
+              <p>
+                {% if  cart.variant_id.product_id.offer > cart.variant_id.product_id.brand_id.c_id.offer %}
+                <span class="sale-tag">-{{cart.variant_id.product_id.offer}}%</span>
+                {% elif cart.variant_id.product_id.offer < cart.variant_id.product_id.brand_id.c_id.offer %}
+                <span class="sale-tag">-{{cart.variant_id.product_id.brand_id.c_id.offer}}%</span>
+                {% else %}
+                <span class="sale-tag">No offers</span>
+                {% endif %}
+              </p>
+            </div>
+            <div class="col-lg-1 col-md-2 col-12">
+              <a class="remove-item" onclick="delCartItem({{cart.id}})"><i class="lni lni-close"></i></a>
+            </div>
+          </div>
+        </div>
+
+
+
+        {% endfor %}
+
+
+
+      </div>
+      <div class="row">
+        <div class="col-12">
+
+          <div class="total-amount">
+            <div class="row">
+              <div class="col-lg-8 col-md-6 col-12">
+                
+              </div>
+              <div class="col-lg-4 col-md-6 col-12">
+                <div class="right">
+                  <ul>
+                    <li>Cart Subtotal ₹<span id="Cart_Subtotal">{{cart_sub}}</span></li>
+                    <li>Shipping<span>Free</span></li>
+                    <!-- <li>You Save<span>$29.00</span></li> -->
+                    <li class="last">You Pay ₹<span id="cart_total">{{cart_sub}}</span></li>
+                  </ul>
+                  <div class="button">
+                    {% if cart_sub %}
+                    <a href="/checkout/0" class="btn" id="checkout-btn">Checkout</a>
+                    {% endif %}
+
+
+
+                    <a href="/" class="btn btn-alt">Continue shopping</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  {% include 'userTempl/footer.html' %}
+
+
+  <a href="#" class="scroll-top">
+    <i class="lni lni-chevron-up"></i>
+  </a>
+
+  <script src="{% static 'userAddon/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'userAddon/js/tiny-slider.js' %}"></script>
+  <script src="{% static 'userAddon/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'userAddon/js/main.js' %}"></script>
+  <script src="{% static 'userAddon/js/addToCart.js' %}"></script>
+
+
+
+
+</body>
+
+
+</html>

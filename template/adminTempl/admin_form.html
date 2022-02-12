@@ -1,0 +1,64 @@
+{% extends "adminTempl/admin_main.html" %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+
+<div class="">
+    <form method="post" action="{{url}}" class="d-flex justify-content-center mt-5 align-items-center "
+        enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="" style="padding-bottom: 9rem;">
+            <h1 class="text-center">{{title}}</h1>
+            <div class="container ">
+                <div class="row">
+                    {% for i in form %}
+                    {% if form.img1 == i %}
+                    <div class="holder col-6 d-flex justify-content-center align-items-center" style="height: 6%;">
+                        <img  id="imgPreview" src="#" style="width: 6%;" alt="pic" />
+                    </div>
+                     {% endif %}
+
+                     {% if form.img2 == i %}
+                     <div class="holder col-6 d-flex justify-content-center align-items-center" style="height: 6%;">
+                         <img  id="imgPreview2" src="#" style="width: 6%;" alt="pic" />
+                     </div>
+                      {% endif %}
+
+                      {% if form.img3 == i %}
+                      <div class="holder col-6 d-flex justify-content-center align-items-center" style="height: 6%;">
+                          <img  id="imgPreview3" src="#" style="width: 6%;" alt="pic" />
+                      </div>
+                       {% endif %}
+
+
+
+                    <div class="col-md-6 mt-3">{{i|as_crispy_field}}</div>
+                    {% endfor %}
+
+                    {% for i in variant_1 %}
+                    <div class="col-md-6 mt-3">{{i|as_crispy_field}}</div>
+                    {% endfor %}
+                    {% for i in variant_2 %}
+                    <div class="col-md-6 mt-3">{{i|as_crispy_field}}</div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn bg-primary w-100 text-light mt-5" name="product_id"
+                value="{{product_id}}">submit</button>
+
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+
+<style>
+    #id_category {
+        width: 15rem;
+    }
+</style>
+{% endblock %}

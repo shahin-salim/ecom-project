@@ -1,0 +1,264 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>smartshop</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet" href="{% static 'userAddon/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/LineIcons.3.0.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/glightbox.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/main.css' %}" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css" rel="stylesheet" />
+
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+    <style>
+        .swal2-cancel {
+            margin-right: 1rem !important;
+        }
+
+        #add-address-form input,
+        textarea {
+            width: 100%;
+            border: none;
+        }
+
+        .err-address {
+            color: red;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+
+    {% include 'userTempl/header.html' %}
+
+
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">Profile</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="/"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="/orderdetails">orders</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <section class="container">
+        <h1 class="text-center mt-3">Order Details</h1>
+        <div class="table-responsive  ">
+            <table class="table  table-bordered " id="">
+                <thead>
+                    <tr>
+                        <th scope="col">product name</th>
+                        <th scope="col">total_qty</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col">date</th>
+                        <th scope="col">address</th>
+                        <th scope="col">order status</th>
+                        <th scope="col">cancell order</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in orderdetials %}
+
+                    <tr>
+                        <td>{{i.variant_id__product_id__brand_id__brand_name}}
+                            {{i.variant_id__product_id__product_name}}
+                            ({{i.variant_id__variant}}GB)</td>
+                        <td>{{i.total_qty}}</td>
+                        <td>{{i.subtotal}}</td>
+                        <td>{{i.date}}</td>
+                        <td style="width: 17rem;">{{i.address}}
+                        </td>
+                        <td class="text-primary" id="status{{i.id}}">{{i.order_status}}</td>
+                        <td>
+                            {% if i.order_status == "Cancelled" or i.order_status == "Admin cancell" or i.order_status == 'Returned' %}
+                            **
+                            {% elif i.order_status == "Delivered" %}
+                            <button class="btn bg-primary text-light" id="cancell{{i.id}}"
+                                onclick="cancellOrReturn({{i.id}})" data-type='Return' style="width: 9rem;">Return
+                                Product</button>
+                            {% else %}
+                            <button class="btn bg-danger text-light" id="cancell{{i.id}}"
+                                onclick="cancellOrReturn({{i.id}})" data-type="Cancel" style="width: 9rem;">Cancell
+                                order</button>
+                            {% endif %}
+
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                    
+                </tbody>
+
+                
+
+            </table>
+        </div>
+        <div class="row">
+
+            <div class="d-flex justify-content-center mb-2">
+                <nav aria-label="...">
+                    <ul class="pagination">
+                    {% if orderdetials.has_previous %}
+                    <li class="page-item ">
+                        <a class="page-link" href="?page={{orderdetials.previous_page_number}}">prevous</a>
+                    </li>
+                    {% endif %}
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">{{orderdetials.number}} <span class="visually-hidden"></span></a>
+                    </li>
+                    {% if orderdetials.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{orderdetials.next_page_number}}">Next</a>
+                    </li>
+                    {% endif %}
+                    </ul>
+                </nav>
+                
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+    {% include 'userTempl/footer.html' %}
+
+
+
+    <a href="#" class="scroll-top">
+        <i class="lni lni-chevron-up"></i>
+    </a>
+
+    <script src="{% static 'userAddon/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'userAddon/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'userAddon/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'userAddon/js/main.js' %}"></script>
+    <script src="{% static 'userAddon/js/addToCart.js' %}"></script>
+
+    <!-- MDB -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+
+
+    <script>
+        function cancellOrReturn(id) {
+            val = $("#cancell" + id).attr('data-type')
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: "You want to " + val + " this order",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var data = {
+                        id: id,
+                        val: val
+                    };
+                    $.ajax({
+                        url: "/cancell_order",
+                        method: "GET",
+                        data: data,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.success) {
+                                $("#cancell" + id).remove()
+                                $("#status" + id).html(val);
+                                swalWithBootstrapButtons.fire(
+                                    'Product ' + val,
+                                    'success'
+                                )
+                            } else {
+                                alert("failed");
+                            }
+                        },
+                    });
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your imaginary file is safe :)',
+                        'error'
+                    )
+                }
+            })
+        }
+    </script>
+
+
+
+</body>
+
+
+</html>

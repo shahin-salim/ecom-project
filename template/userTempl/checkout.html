@@ -1,0 +1,748 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>SmartShop</title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="stylesheet" href="{% static 'userAddon/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'userAddon/css/LineIcons.3.0.css' %}" />
+  <link rel="stylesheet" href="{% static 'userAddon/css/tiny-slider.css' %}" />
+  <link rel="stylesheet" href="{% static 'userAddon/css/glightbox.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'userAddon/css/main.css' %}" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    .swal2-cancel {
+      margin-right: 1rem !important;
+    }
+    .razorpay-payment-button{
+      display: none;
+    }
+  </style>
+
+</head>
+
+<body>
+
+      <!-- Preloader -->
+      <!-- <div class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div> -->
+    <!-- /End Preloader -->
+
+
+  {% include 'userTempl/header.html' %}
+
+
+  <div class="breadcrumbs">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 col-md-6 col-12">
+          <div class="breadcrumbs-content">
+            <h1 class="page-title">checkout</h1>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-12">
+          <ul class="breadcrumb-nav">
+            <li><a href="/"><i class="lni lni-home"></i> Home</a></li>
+            <li>checkout</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <section class="checkout-wrapper section">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="checkout-steps-form-style-1">
+            <ul id="accordionExample">
+              <li>
+                <h6 class="title" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true"
+                  aria-controls="collapseThree">Your Addresses </h6>
+                <section class="checkout-steps-form-content collapse show" id="collapseThree"
+                  aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                  <div class="row">
+
+                    <!-- adress form   starts-->
+                    <form id="user-address">
+                      {% for i in addresses %}
+                      <div class="input-group mt-3" id="add{{i.id}}">
+                        <div class="input-group-text">
+                          {% if forloop.first %}
+                          <input class="form-check-input mt-0" type="radio" value="{{i.id}}"
+                            aria-label="Radio button for following text input" name="address" checked>
+                          {% else %}
+                          <input class="form-check-input mt-0" type="radio" value="{{i.id}}"
+                            aria-label="Radio button for following text input" name="address">
+                          {% endif %}
+                        </div>
+                        <div class="ms-3 form-control d-md-flex justify-content-between">
+
+                          <div>
+                            <p>{{i.full_name}}</p>
+                          <p>{{i.address}}</p>
+                          <p>{{i.city}}</p>
+                          <p>{{i.mobile_number}}</p>
+                          <p>{{i.zipcode}}</p>
+
+                          </div>
+                          <div class="d-flex flex-column justify-content-around">
+                            <div>
+
+                              <button type="button" class="btn bg-primary text-light" data-address_id={{i.id}} data-currentUrl="/checkout/{{from}}/" onclick="setAdd({{i.id}}, '/checkout/{{from}}/')">edit address</button>
+                            </div>
+                            <a class="btn bg-danger text-light mt-2 mt-md-0" onclick="delAddress({{i.id}})">Delete</a>
+                          </div>
+                        </div>
+
+                      </div>
+                      {% endfor %}
+                    </form>
+                    <!-- adress form   ends-->
+
+                  </div>
+                </section>
+              </li>
+              <li>
+                <h6 class="title collapsed" data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                  aria-expanded="false" aria-controls="collapseFour">Add New Shipping Address</h6>
+                <section class="checkout-steps-form-content collapse" id="collapseFour" aria-labelledby="headingFour"
+                  data-bs-parent="#accordionExample">
+                  <form action="/addressForm" method="post" id="submit-form" novalidate>
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="single-form form-default">
+                          <label>Full name</label>
+                          <div class="form-input form">
+                            {{form.full_name}}
+                            {{ form.full_name.errors }}
+                            <p class="err text-danger"></p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="single-form form-default">
+                          <label>City</label>
+                          <div class="form-input form">
+                            {{form.city}}
+                            {{ form.city.errors }}
+                            <p class="err text-danger"></p>
+
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="single-form form-default">
+                          <label>Zipcode</label>
+                          <div class="form-input form">
+                            {{form.zipcode}}
+                            {{ form.zipcode.errors }}
+                            <p class="err text-danger"></p>
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="single-form form-default">
+                          <label>Mobile Number</label>
+                          <div class="form-input form">
+                            {{form.mobile_number}}
+                            {{ form.mobile_number.errors }}
+                            <p class="err text-danger"></p>
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="single-form form-default">
+                          <label> Address</label>
+                          <div class="form-input form">
+                            {{form.address}}
+                            {{ form.address.errors }}
+                            <p class="err text-danger"></p>
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="steps-form-btn button">
+                          <button type="button" class="btn" data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                            aria-expanded="false" aria-controls="collapseThree">previous</button>
+                          <button type="button" class="btn btn-alt" id="submit-btn">Save</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </section>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="checkout-sidebar">
+            <div class="checkout-sidebar-coupon">
+              <p>Appy Coupon to get discount!</p>
+              <form  id="coupen-form">
+                {% csrf_token %}
+                <div class="single-form form-default">
+                  <div class="form-input form">
+                    <input type="text" placeholder="Coupon Code" name="coupen-code" id="coupen-code">
+                    <input type="hidden"  value={{items.id}} name="choosen">
+                  </div>
+                  <div class="button">
+                    <button class="btn" id="coupen-submit" type="button">apply</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="checkout-sidebar-price-table mt-30">
+              <h5 class="title">Pricing Table</h5>
+              <div class="sub-total-price">
+                {% if buynow == True %}
+
+                <div class="total-price">
+                  <p class="value">
+                    <span>{{items.product_id.brand_id}} {{items.product_id.product_name}}({{items.variant}}GB) :
+                      {{items.price}} x 1 </span>
+                    <!-- <span></span>
+                    <span>
+
+                    </span> -->
+                  </p>
+                  <p class="price">
+                    {% if items.price == items.final_price %}
+                    {% elif items.product_id.offer > items.product_id.brand_id.c_id.offer %}
+                    {{items.product_id.offer}}
+                    {% else %}
+                    {{items.product_id.brand_id.c_id.offer}}
+                    {% endif %}
+                    %off
+                  </p>
+                  <p class="price">{{items.final_price}}</p>
+                </div>
+
+                {% else %}
+                {% for i in cartItems %}
+                {% if not i.quantity > i.variant_id__quantity %}
+                
+
+                <div class="total-price">
+                  <p class="value">
+                    <span>{{i.variant_id__product_id__brand_id__brand_name}} {{i.variant_id__product_id__product_name}} :
+                      {{i.variant_id__price}} x {{i.quantity}}</span>
+                    <!-- <span></span>
+                    <span>
+
+                    </span> -->
+                  </p>
+                  <p class="price">
+                    {% if i.variant_id__price == i.variant_id__final_price %}
+                    {% elif i.variant_id__product_id__offer > i.variant_id__product_id__brand_id__c_id__offer %} 
+                    {{i.variant_id__product_id__offer}} %off
+                    {% else %}
+                    {{i.variant_id__product_id__brand_id__c_id__offer}} %off
+                    {% endif %}
+                    
+                  </p>
+
+                  <p class="price">{{i.subtotal}}</p>
+                </div>
+
+
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+              </div>
+
+              <div class="total-payable" >
+                <div class="payable-price">
+                  <p class="value"  id="label-of-coupen"></p>
+                  <p class="price" id="percentage-of-coupen"></p>
+                </div>
+              </div>
+
+
+              <div class="total-payable">
+                <div class="payable-price">
+                  <p class="value">Subotal Price:</p>
+                  {% if buynow %}
+                  <p class="price" id="subtotal-amt">{{items.final_price}}</p>
+                  {% else %}
+                  <p class="price" id="subtotal-amt">{{cart_subtotal}}</p>
+                  {% endif %}
+                </div>
+              </div>
+
+
+
+
+
+
+
+              <div class="price-table-btn button">
+
+                <h6 class="mb-1">Payment Method</h6>
+                <form action="" id="pyment-method-form">
+                  <div class="input-group">
+                    <div class="input-group-text">
+                      <input class="form-check-input mt-0" type="radio" value="Cash On Delivery"
+                        aria-label=" Radio button for following text input" name="pay-method">
+                    </div>
+                    <input type="text" class="form-control" aria-label="Text input with radio button" disabled
+                      value="Cash On Delivery">
+                  </div>
+
+                  <div class="input-group">
+                    <div class="input-group-text">
+                      <input class="form-check-input mt-0" type="radio" value="PayPal"
+                        aria-label=" Radio button for following text input" name="pay-method">
+                    </div>
+                    <input type="text" class="form-control" aria-label="Text input with radio button" disabled
+                      value="Paypal">
+
+                  </div>
+
+
+
+                  <div class="input-group">
+                    <div class="input-group-text">
+                      <input class="form-check-input mt-0" type="radio" value="Razorpay"
+                        aria-label=" Radio button for following text input" name="pay-method">
+                    </div>
+                    <input type="text" class="form-control" aria-label="Text input with radio button" disabled
+                      value="Razorpay">
+
+                  </div>
+
+                  
+
+
+                </form>
+              </div>
+              <div class="price-table-btn button">
+                {% if buynow %}
+                <a id="checkout-btn" class="btn btn-alt" data-way="buynow" data-variant={{items.id}}>Checkout</a>
+                {% else %}
+                <a id="checkout-btn" class="btn btn-alt" data-way="cart" data-variant=>Checkout</a>
+                {% endif %}
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Paypal</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="paypal-button-container"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close-modal">Close</button>
+            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+  {% include 'userTempl/footer.html' %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <a href="#" class="scroll-top">
+    <i class="lni lni-chevron-up"></i>
+  </a>
+
+
+  <!-- 
+<script>
+  $("#close-modal").click(() => {
+
+  })
+</script> -->
+
+
+<!-- razoray  -->
+
+<form action="/makepayment" method="post" id="special-checkout">
+  {% csrf_token %}
+  <input type="hidden" value="" id="checkout-data-address" name="addressId">
+  <input type="hidden" value="" id="checkout-data-from" name="from">
+  <input type="hidden" value="" id="checkout-data-variant" name="variant">
+  <input type="hidden" value="" id="checkout-data-method" name="paymentMethod">
+  <input type="hidden" value="" id="checkout-data-coupen" name="coupenId">
+</form>
+
+
+<form action="/makepayment" method="POST" id="razorpay-submit">
+  {% csrf_token %}
+  <input type="hidden" value="" id="user-address-raz" name="addressId">
+  <input type="hidden" value="" id="from-raz" name="from">
+  <input type="hidden" value="" id="variant-raz" name="variant">
+  <input type="hidden" value="Razorpay" id="variant-raz" name="paymentMethod">
+  <input type="hidden" value="" id="checkout-data-coupen-raz" name="coupenId">
+
+
+<input type="hidden" value="" id="order_ids">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+        var options = {
+      "key": "rzp_test_8H9CZ5cwlOVqJ9", // Enter the Key ID generated from the Dashboard
+      "amount": "100", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "smartshop",
+      "description": "Test Transaction",
+      "image": "https://example.com/your_logo",
+      "order_id": "", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "handler": function (response) {
+          $('#razorpay-submit').submit();
+      },
+      "prefill": {
+          "name": "shahinslaim",
+          "email": "shahinsalim82@gmail.com",
+          "contact": "8921849804"
+      },
+      "notes": {
+          "address": "SmartShop Corporate Office"
+      },
+      "theme": {
+          "color": "#3399cc"
+      }
+  };
+  var rzp1 = new Razorpay(options);
+  rzp1.on('payment.failed', function (response) {
+      alert(response.error.code);
+      alert(response.error.description);
+      alert(response.error.source);
+      alert(response.error.step);
+      alert(response.error.reason);
+      alert(response.error.metadata.order_id);
+      alert(response.error.metadata.payment_id);
+  });
+    
+      function execute () {
+            $.ajax({
+                url: '/razorpaysetamt',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == 'success') {
+                        options["order_id"] = response.ordersid;
+                        rzp1 = new Razorpay(options)
+                        rzp1.open();
+                        e.preventDefault();
+                    }
+
+                }
+            })
+            return false;
+        
+
+    };
+</script>
+
+
+
+  <script
+    src="https://www.paypal.com/sdk/js?client-id=ATYneJOVHbPeKBaa7gPRkYBK6FwgiiNU5oaLQEZkFpDY24p6iFYX9BVs49Aw8-_tBcFUU7nFQfc0WuOt&currency=USD&disable-funding=credit"></script>
+
+  <script>
+    // Render the PayPal button into #paypal-button-container
+    paypal.Buttons({
+
+      style: {
+        color: 'blue',
+        shape: 'rect',
+        label: 'pay',
+        height: 40
+      },
+
+      // Set up the transaction
+      createOrder: function (data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: '10'
+            }
+          }]
+        });
+      },
+
+      // Finalize the transaction
+      onApprove: function (data, actions) {
+        return actions.order.capture().then(function (details) {
+          // Show a success message to the buyer
+          alert('Transaction completed by ' + details.payer.name.given_name + '!');
+
+          $("#special-checkout").submit()
+
+        });
+      }
+
+
+    }).render('#paypal-button-container');
+  </script>
+
+
+
+
+
+  <style>
+    .errorlist li {
+      color: red;
+    }
+  </style>
+
+
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script src="{% static 'userAddon/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'userAddon/js/tiny-slider.js' %}"></script>
+  <script src="{% static 'userAddon/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'userAddon/js/main.js' %}"></script>
+
+  <script src="{% static 'userAddon/js/addToCart.js' %}"></script>
+
+  <script>
+
+
+
+    $("#submit-btn").click(() => {
+      valid = 0
+
+      let full_name = $("#id_full_name").val().trim()
+      let city = $("#id_city").val().trim()
+      let zipcode = $("#id_zipcode").val().trim()
+      let mobile_number = $("#id_mobile_number").val().trim()
+      let address = $("#id_address").val().trim()
+
+      if (full_name == "") {
+        showErr(0, 'fill this field')
+      } else if (/^([a-zA-Z]+\s)*[a-zA-Z]+$/.test(full_name) == false) {
+        showErr(0, 'only enter character')
+      } else {
+        showErr(0, '')
+        valid += 1
+      }
+
+      if (city == "") {
+        showErr(1, 'fill this field')
+      } else if (/^[a-zA-Z]+$/.test(city) == false) {
+        showErr(1, 'only enter character')
+      } else {
+        showErr(1, '')
+        valid += 1
+      }
+
+      if (zipcode == '') {
+        showErr(2, 'fill this field')
+      } else if (/^\d+$/.test(zipcode) == false) {
+        showErr(2, 'only enter number')
+      } else if (zipcode.length < 6) {
+        showErr(2, 'zip code should contain 6 digit')
+      } else if (zipcode.length > 6) {
+        showErr(2, 'maximum length is 6 digit')
+      } else {
+        showErr(2, '')
+        valid += 1
+      }
+
+      if (mobile_number == '') {
+        showErr(3, 'fill this field')
+      } else if (/^\d+$/.test(mobile_number) == false) {
+        showErr(3, 'only enter number')
+      } else if (mobile_number.length != 10) {
+        showErr(3, 'enter a valid number')
+      } else {
+        showErr(3, '')
+        valid += 1
+      }
+
+      if (address == '') {
+        showErr(4, 'fill this field')
+      } else {
+        showErr(4, '')
+        valid += 1
+      }
+
+      if (valid == 5) {
+        $.ajax({
+          url: "/addressForm",
+          method: "POST",
+          data: $("#submit-form").serialize(),
+          dataType: "json",
+          success: function (data) {
+            if (data.success) {
+
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+
+              Toast.fire({
+                icon: 'success',
+                title: 'added address successfully'
+              })
+
+              window.location.reload();
+            } else {
+              alert("failed");
+            }
+          },
+        });
+
+      }
+    })
+
+    function showErr(index, error) {
+      console.log(index + '       ' + error)
+      document.getElementsByClassName('err')[index].innerHTML = error
+    }
+
+    $("#checkout-btn").click(() => {
+
+      console.log('check')
+      method = $('input[name=pay-method]:checked', '#pyment-method-form').val()
+      address_id = $('input[name=address]:checked', '#user-address').val()
+      console.log(address_id)
+
+      console.log()
+
+      $("#checkout-data-address").attr('value', address_id)
+      $("#checkout-data-from").attr('value',  $("#checkout-btn").attr("data-way"))
+      $("#checkout-data-variant").attr('value',  $("#checkout-btn").attr("data-variant"))
+      $("#checkout-data-method").attr('value',  method)
+
+      if (method == undefined) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'select payment method',
+        })
+      } else if (address_id == undefined) {
+  
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'add adress',
+        })
+      }
+      else if (method == "Cash On Delivery") {
+
+      $("#special-checkout").submit()
+
+      } else if (method == "PayPal") {
+
+        console.log('modal')
+        $('#exampleModal').modal('show');
+
+      } else if (method == "Razorpay"){
+        console.log('razorepay')
+        $("#user-address-raz").attr('value', address_id)
+        $("#from-raz").attr('value',  $("#checkout-btn").attr("data-way"))
+        $("#variant-raz").attr('value',  $("#checkout-btn").attr("data-variant"))
+        execute()
+      }
+
+    })
+
+  </script>
+
+  <script>
+    function setAdd(id, from){
+      window.location = "/editaddress?address_id="+id+"&currentUrl="+from
+    }
+
+    
+  </script>
+
+  <script>
+
+    function coupenAlert(msg , type){
+      const Toast = Swal.mixin({
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+
+          Toast.fire({
+            icon: type,
+            title: msg
+          })
+    }
+
+
+    $("#coupen-submit").click(() => {
+      
+
+      $.ajax({
+        url: "/addcoupen",
+        method: "POST",
+        data: $("#coupen-form").serialize(),
+        dataType: "json",
+        success: function (data) {
+          if (data.success) {
+            //alert(data.err + ' ' + data.finalprice + ' offer '+ data.offerIs + ' id ' +data.coupenId)
+
+            $("#subtotal-amt").html(data.finalprice)
+            $("#percentage-of-coupen").html(data.offerIs+"%")
+            $("#label-of-coupen").html("Coupen offer:")
+            $("#checkout-data-coupen").attr('value', data.coupenId)
+            $("#checkout-data-coupen-raz").attr('value', data.coupenId)
+            coupenAlert('coupen applied succesfully', 'success')
+          }else{
+            coupenAlert('not a valid coupen', 'error')
+          }
+        }
+      });
+    })
+  </script>
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,889 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>smartshop</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet" href="{% static 'userAddon/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/LineIcons.3.0.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/glightbox.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/main.css' %}" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css" rel="stylesheet" />
+
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"
+        defer></script>
+
+
+
+    <style>
+        .swal2-cancel {
+            margin-right: 1rem !important;
+        }
+
+        #add-address-form input,
+        textarea {
+            width: 100%;
+            border: none;
+        }
+
+        .err-address {
+            color: red;
+        }
+        .navbar{
+            box-shadow: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Preloader -->
+    <!-- <div class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div> -->
+    <!-- /End Preloader -->
+
+    {% include 'userTempl/header.html' %}
+
+
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">Profile</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="/"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="/profile">Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="">
+
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <h3 class="d-flex justify-content-end"> <a href="/orderdetails" class="btn bg-primary text-light">View all
+                    orders</a> </h3>
+        </div>
+    </div>
+
+    <section style="background-color: #eee;" class=" bg-light">
+        <div class="container py-5">
+
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="card mb-4 border">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">First name</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{user.first_name}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Last name</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{user.last_name}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Username</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{user.username}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Email</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{user.email}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Phone</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{user.number}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row" style="display: flex;">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Password</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <p class="text-muted mb-0">****</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-primary" data-mdb-toggle="modal" href="#exampleModalToggle2"
+                                        role="button">Change Password</a>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <a class="btn btn-primary" data-mdb-toggle="modal" href="#exampleModalToggle1"
+                                        role="button">Edit</a>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </section>
+
+
+    <div class="modal-dialog modal-dialog-centered">
+
+
+        <!-- First modal dialog -->
+        <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+            tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel1">Modal 1</h5>
+                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" id="pwd-form">
+                            {% csrf_token %}
+                            <!-- old password -->
+                            <div class="form-outline mb-4">
+                                <input name="old_pwd" type="text" id="old-pwd" value="" class="form-control" />
+                                <label class="form-label" for="form2Example1">Old password</label>
+                            </div>
+                            <p class="err-pwd text-danger"></p>
+
+                            <!-- Password input -->
+                            <div class="form-outline mb-4">
+                                <input name="new_pwd" type="text" id="new-pwd" value="" class="form-control" />
+                                <label class="form-label" for="form2Example2">New password</label>
+                            </div>
+                            <p class="err-pwd text-danger"></p>
+
+                            <!-- Password input -->
+                            <div class="form-outline mb-4">
+                                <input name="confirm-pwd" type="text" id="confirm-pwd" value="" class="form-control" />
+                                <label class="form-label" for="form2Example2">Confirm password</label>
+                            </div>
+                            <p class="err-pwd text-danger"></p>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button class="btn btn-primary" type="button" id="pwd-submit-btn">
+                            Save
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Second modal dialog -->
+
+
+    </div>
+
+
+
+
+
+
+    <!-- First modal dialog -->
+    <div class="modal fade" id="exampleModalToggle1" aria-hidden="true" aria-labelledby="exampleModalToggleLabel1"
+        tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalToggleLabel1">Modal 1</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+
+
+                    <form id="address-form">
+                        {% csrf_token %}
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <input name="first_name" type="text" id="first_name" value="{{user.first_name}}"
+                                class="form-control" />
+                            <label class="form-label" for="form2Example1">First name</label>
+
+                        </div>
+                        <p class="err text-danger"></p>
+
+                        <!-- Password input -->
+                        <div class="form-outline mb-4">
+                            <input name="last_name" type="text" id="last_name" value="{{user.last_name}}"
+                                class="form-control" />
+                            <label class="form-label" for="form2Example2">Last name</label>
+
+                        </div>
+                        <p class="err text-danger"></p>
+
+                        <div class="form-outline mb-4">
+                            <input name="username" type="text" id="username" value="{{user.username}}"
+                                class="form-control" />
+                            <label class="form-label" for="form2Example1">username</label>
+
+                        </div>
+                        <p class="err text-danger"></p>
+
+                        <!-- Password input -->
+                        <div class="form-outline mb-4">
+                            <input name="email" type="email" id="email" value="{{user.email}}" class="form-control" />
+                            <label class="form-label" for="form2Example2">Email</label>
+
+                        </div>
+                        <p class="err text-danger"></p>
+
+
+                        <div class="form-outline mb-4">
+                            <input name="number" type="number" id="number" value="{{user.number}}"
+                                class="form-control" />
+                            <label class="form-label" for="form2Example2">number</label>
+
+                        </div>
+                        <p class="err text-danger"></p>
+
+
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="button" id="submit-btn">
+                                Save
+                            </button>
+
+                    </form>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+    <!-- add adress  modal -->
+
+
+    <div class="modal-dialog modal-dialog-scrollable">
+
+
+        <!-- First modal dialog -->
+        <div class="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel3"
+            tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel1">Modal 1</h5>
+                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" id="add-address-form" style="overflow-y: scroll; height: 40rem;">
+                            {% csrf_token %}
+                            <!-- old password -->
+                            <div class="form-control mb-4">
+                                <label for="exampleInputPassword1" class="form-label">full name</label>
+
+                                {{form.full_name}}
+                                {{ form.full_name.errors }}
+                            </div>
+                            <p class="err-address text-danger"></p>
+
+                            <!-- Password input -->
+                            <div class="form-control mb-4">
+                                <label for="exampleInputPassword1" class="form-label">city</label>
+
+                                {{form.city}}
+                                {{ form.city.errors }}
+                            </div>
+                            <p class="err-address text-danger"></p>
+
+                            <!-- Password input -->
+                            <div class="form-control mb-4">
+                                <label for="exampleInputPassword1" class="form-label">zipcode</label>
+
+                                {{form.zipcode}}
+                                {{ form.zipcode.errors }}
+                            </div>
+                            <p class="err-address text-danger"></p>
+
+                            <div class="form-control mb-4">
+                                <label for="exampleInputPassword1" class="form-label">number</label>
+
+                                {{form.mobile_number}}
+                                {{ form.mobile_number.errors }}
+                            </div>
+                            <p class="err-address text-danger"></p>
+
+
+                            <div class="form-control mb-4">
+                                <label for="exampleInputPassword1" class="form-label">address</label>
+
+                                {{form.address}}
+                                {{ form.address.errors }}
+                            </div>
+                            <p class="err-address text-danger"></p>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button class="btn btn-primary" type="button" id="addr-submit-btn">
+                            Save
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Second modal dialog -->
+
+
+    </div>
+
+
+
+    <!-- ends -->
+
+
+
+
+
+
+    <section style="background-color: #eee;" class="pb-3 border  container bg-light mb-5">
+        <div class="container ">
+
+
+            <div class="mt-3">
+                <!-- Buttons trigger collapse -->
+            <div class="d-flex justify-content-between">
+                <a class="btn btn-primary w-25 d-flex justify-content-center align-items-center"
+            data-mdb-toggle="modal" href="#exampleModalToggle3" role="button"><span>Add
+                Address</span></a>
+            <button class="btn btn-primary" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseExample"
+                aria-expanded="false" aria-controls="collapseExample">
+                view all address
+            </button>
+            </div>
+
+            <!-- Collapsed content -->
+            <div class="collapse mt-3" id="collapseExample">
+                <table class=" display " id="table_id">
+                    <thead>
+                        <tr>
+                            <th scope="col">address</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for i in address %}
+                        <tr id="add{{i.id}}">
+                            <td>
+                                <h6>{{i.full_name}} {{i.mobile_number}}</h6>
+                                <p style="font-weight: 400;">{{i.address}},{{i.city}}-{{i.zipcode}}</p>
+                            </td>
+                            <td>
+                                <form action="/editaddress">
+                                    <button type="submit" class="btn bg-primary text-light" value="{{i.id}}"
+                                        name="address_id">Edit profile</button>
+                                    <input type="hidden" value="/profile" name="currentUrl">
+                                </form>
+                            </td>
+                            <td><a onclick="delAddress({{i.id}})" class="btn bg-danger text-light">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            </div>
+
+        </div>
+    </section>
+
+
+
+
+
+    {% include 'userTempl/footer.html' %}
+
+
+    <script>
+        $(document).ready(function () {
+            $('#table_id').DataTable();
+        });
+
+        $(document).ready(function () {
+            $('#table_id_order').DataTable();
+        });
+    </script>
+    <a href="#" class="scroll-top">
+        <i class="lni lni-chevron-up"></i>
+    </a>
+
+    <script src="{% static 'userAddon/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'userAddon/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'userAddon/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'userAddon/js/main.js' %}"></script>
+    <script src="{% static 'userAddon/js/addToCart.js' %}"></script>
+
+    <!-- MDB -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+    <script>
+        $("#submit-btn").click(() => {
+            valid = 0
+
+            let first_name = $("#first_name").val().trim()
+            let last_name = $("#last_name").val().trim()
+            let username = $("#username").val().trim()
+            let email = $("#email").val().trim()
+            let number = $("#number").val().trim()
+
+            if (first_name == "") {
+                showErr(0, 'fill this field')
+            } else if (/^([a-zA-Z]+\s)*[a-zA-Z]+$/.test(first_name) == false) {
+                showErr(0, 'only enter character')
+            } else {
+                showErr(0, '')
+                valid += 1
+            }
+
+            if (last_name == "") {
+                showErr(1, 'fill this field')
+            } else if (/^[a-zA-Z]+$/.test(last_name) == false) {
+                showErr(1, 'only enter character')
+            } else {
+                showErr(1, '')
+                valid += 1
+            }
+
+            if (username == "") {
+                showErr(2, 'fill this field')
+            } else if (/^[a-zA-Z]+$/.test(username) == false) {
+                showErr(2, 'only enter character')
+            } else {
+                showErr(2, '')
+                valid += 1
+            }
+
+            if (email == "") {
+                showErr(3, 'fill this field')
+            } else if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email) == false) {
+                showErr(3, 'enter a valid email')
+            } else {
+                showErr(3, '')
+                valid += 1
+            }
+
+            if (number == '') {
+                showErr(4, 'fill this field')
+            } else if (/^\d+$/.test(number) == false) {
+                showErr(4, 'only enter number')
+            } else if (number.length != 10) {
+                showErr(4, 'enter a valid number')
+            } else {
+                showErr(4, '')
+                valid += 1
+            }
+
+
+
+            function showErr(index, error) {
+                console.log(index + '       ' + error)
+                document.getElementsByClassName('err')[index].innerHTML = error
+            }
+
+
+
+            if (valid == 5) {
+                $.ajax({
+                    url: "/editprofile",
+                    method: "POST",
+
+                    data: $("#address-form").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.success) {
+                            //alert('success')
+
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'added address successfully'
+                            })
+
+                            window.location.reload();
+                        } else {
+                            alert('fail')
+                            showErr(4, data.number)
+                            showErr(3, data.email)
+                            showErr(2, data.username)
+
+                        }
+                    },
+                });
+
+            }
+        })
+    </script>
+    <!-- change password  -->
+    <script>
+
+
+
+        function showErrForPwd(index, error) {
+            console.log(index + '       ' + error)
+            document.getElementsByClassName('err-pwd')[index].innerHTML = error
+        }
+
+        $("#pwd-submit-btn").click(() => {
+
+
+
+            valid = 0
+
+            let old_pwd = $("#old-pwd").val().trim()
+            let new_pwd = $("#new-pwd").val().trim()
+            let confirm_pwd = $("#confirm-pwd").val().trim()
+
+
+
+            if (old_pwd == "") {
+                showErrForPwd(0, 'fill this field')
+            } else {
+                showErrForPwd(0, '')
+                valid += 1
+            }
+
+            if (new_pwd == "") {
+                showErrForPwd(1, 'fill this field')
+            } else if (new_pwd.length < 4) {
+                showErrForPwd(1, 'minimum length is 4')
+            } else {
+                showErrForPwd(1, '')
+                valid += 1
+            }
+
+            if (confirm_pwd == "") {
+                showErrForPwd(2, 'fill this field')
+            } else if (confirm_pwd != new_pwd) {
+                showErrForPwd(2, 'both passowrd field didnt match')
+            } else {
+                showErrForPwd(2, '')
+                valid += 1
+            }
+
+            if (valid == 3) {
+
+
+                $.ajax({
+                    url: "/changepassword",
+                    method: "POST",
+
+                    data: $("#pwd-form").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.success) {
+                            //alert('success')
+
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'passowrd changed successfully'
+                            })
+
+                            window.location.reload();
+                        } else {
+                            //alert('fail')
+                            showErrForPwd(0, "incorrect passowrd")
+
+                        }
+                    },
+                });
+
+            }
+
+        })
+
+    </script>
+
+
+    <script>
+
+        $("#addr-submit-btn").click(() => {
+            valid = 0
+
+            let full_name = $("#id_full_name").val().trim()
+            let city = $("#id_city").val().trim()
+            let zipcode = $("#id_zipcode").val().trim()
+            let mobile_number = $("#id_mobile_number").val().trim()
+            let address = $("#id_address").val().trim()
+
+            if (full_name == "") {
+                showErr(0, 'fill this field')
+            } else if (/^([a-zA-Z]+\s)*[a-zA-Z]+$/.test(full_name) == false) {
+                showErr(0, 'only enter character')
+            } else {
+                showErr(0, '')
+                valid += 1
+            }
+
+            if (city == "") {
+                showErr(1, 'fill this field')
+            } else if (/^[a-zA-Z]+$/.test(city) == false) {
+                showErr(1, 'only enter character')
+            } else {
+                showErr(1, '')
+                valid += 1
+            }
+
+            if (zipcode == '') {
+                showErr(2, 'fill this field')
+            } else if (/^\d+$/.test(zipcode) == false) {
+                showErr(2, 'only enter number')
+            } else if (zipcode.length < 6) {
+                showErr(2, 'zip code should contain 6 digit')
+            } else if (zipcode.length > 6) {
+                showErr(2, 'maximum length is 6 digit')
+            } else {
+                showErr(2, '')
+                valid += 1
+            }
+
+            if (mobile_number == '') {
+                showErr(3, 'fill this field')
+            } else if (/^\d+$/.test(mobile_number) == false) {
+                showErr(3, 'only enter number')
+            } else if (mobile_number.length != 10) {
+                showErr(3, 'enter a valid number')
+            } else {
+                showErr(3, '')
+                valid += 1
+            }
+
+            if (address == '') {
+                showErr(4, 'fill this field')
+            } else {
+                showErr(4, '')
+                valid += 1
+            }
+
+            if (valid == 5) {
+                $.ajax({
+                    url: "/addressForm",
+                    method: "POST",
+                    data: $("#add-address-form").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.success) {
+
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'added address successfully'
+                            })
+
+                            window.location.reload();
+                        } else {
+                            alert("failed");
+                        }
+                    },
+                });
+
+            }
+        })
+
+        function showErr(index, error) {
+            console.log(index + '       ' + error)
+            document.getElementsByClassName('err-address')[index].innerHTML = error
+        }
+    </script>
+
+
+
+    <script>
+        function cancellOrReturn(id) {
+            val = $("#cancell" + id).attr('data-type')
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: "You want to " + val + " this order",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var data = {
+                        id: id,
+                        val: val
+                    };
+                    $.ajax({
+                        url: "/cancell_order",
+                        method: "GET",
+                        data: data,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.success) {
+                                $("#cancell" + id).remove()
+                                $("#status" + id).html(val);
+                                swalWithBootstrapButtons.fire(
+                                    'Product ' + val,
+                                    'success'
+                                )
+                            } else {
+                                alert("failed");
+                            }
+                        },
+                    });
+
+
+
+
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your imaginary file is safe :)',
+                        'error'
+                    )
+                }
+            })
+        }
+    </script>
+
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,171 @@
+{% extends "adminTempl/admin_main.html" %}
+{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<section class="row">
+
+    <div class="table-responsive">
+
+        <div class=" mt-5 " id="editor">
+            <h3 class="h3 text-center col-12">Salesreport</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="px-3">date wise</h3>
+                <form action="/admin_side/salesreport" id="dateandtimeform" class="px-3">
+
+                    <p>from</p>
+                    <input type="date" name="from" id="" value="{{dateFrom}}">
+                    <p class="">to</p>
+                    <input type="date" name="to" id="" value="{{dateTo}}"><br>
+                    <button type="submit" class="btn bg-primary text-light mt-2">submit</button>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+                <h3 class="px-3">monthly Wise</h3>
+                <form action="/admin_side/salesreport" id="monthform" class="px-3">
+                    <p>month</p>
+                    <input type="month" name="monthly" id="" value="{{monthly}}" class="mt-2">
+                    <button type="submit" class="btn bg-primary  text-light">submit</button>
+
+                </form>
+            </div>
+        </div>
+
+
+        <div class="row px-3 mt-2 mb-2">
+            <div class="col-md-6">
+                <a class="btn" id="pdf" onclick="createPDF()">Dowload PDF</a>
+                <a class="btn " id="excel" onclick="excel()">excel</a>
+            </div>
+            <div class="col-md-6">
+
+                <form action="/admin_side/salesreport" method="get" class="d-flex">
+                    <input type="text" name="search" id="" class="form-control">
+                    <button type="submit" class="btn bg-primary text-light ms-2">search</button>
+                </form>
+
+            </div>
+        </div>
+
+        <div id="tab">
+            <table class="table  table-hover" id="">
+                <thead>
+                    <tr>
+                        <th>product name</th>
+                        <th>quantity sold</th>
+                        <th>Revenue</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for i in report %}
+                    <tr>
+                        {% for a in i %}
+
+                        <td>{{a}}</td>
+
+                        {% endfor %}
+
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 
+<div class="d-flex justify-content-center">
+    <nav aria-label="...">
+        <ul class="pagination">
+         {% if coupen.has_previous %}
+          <li class="page-item ">
+            <a class="page-link" href="?page={{coupen.previous_page_number}}">prevous</a>
+          </li>
+          {% endif %}
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#">{{coupen.number}} <span class="visually-hidden"></span></a>
+          </li>
+          {% if coupen.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{coupen.next_page_number}}">Next</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      
+</div> -->
+    <script>
+        function createPDF() {
+            var sTable = document.getElementById('tab').innerHTML;
+
+            var style = "<style>";
+            style = style + "table {width: 100%;font: 17px Calibri;}";
+            style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+            style = style + "padding: 2px 3px;text-align: center;}";
+            style = style + "</style>";
+
+            // CREATE A WINDOW OBJECT.
+            var win = window.open('', '', 'height=700,width=700');
+
+            win.document.write('<html><head>');
+            win.document.write('<title>Sales Report</title>');   // <title> FOR PDF HEADER.
+            win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
+            win.document.write('</head>');
+            win.document.write('<body>');
+            win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
+            win.document.write('</body></html>');
+
+            win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+
+            win.print();    // PRINT THE CONTENTS.
+        }
+    </script>
+
+    <script>
+        function excel() {
+            form1 = $("#dateandtimeform").serialize()
+            form2 = $("#monthform").serialize()
+            alert(form1)
+            alert(form2)
+            window.location = '/admin_side/excel?' + form1 + '&' + form2
+        }
+    </script>
+
+
+
+    {% endblock %}

@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+
+<head>
+     <meta charset="utf-8" />
+     <meta http-equiv="x-ua-compatible" content="ie=edge" />
+     <title>SmartShop</title>
+     <meta name="description" content="" />
+     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+     <link rel="stylesheet" href="{% static 'userAddon/css/bootstrap.min.css' %}" />
+     <link rel="stylesheet" href="{% static 'userAddon/css/LineIcons.3.0.css' %}" />
+     <link rel="stylesheet" href="{% static 'userAddon/css/tiny-slider.css' %}" />
+     <link rel="stylesheet" href="{% static 'userAddon/css/glightbox.min.css' %}" />
+     <link rel="stylesheet" href="{% static 'userAddon/css/main.css' %}" />
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+          integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+     <style>
+          /* Chrome, Safari, Edge, Opera */
+          input::-webkit-outer-spin-button,
+          input::-webkit-inner-spin-button {
+               -webkit-appearance: none;
+               margin: 0;
+          }
+
+          /* Firefox */
+          input[type=number] {
+               -moz-appearance: textfield;
+          }
+     </style>
+</head>
+
+<body>
+
+     {% include "userTempl/header.html" %}
+
+     {% load crispy_forms_tags %}
+
+
+     <div class="d-flex justify-content-center mt-5 align-items-center mb-5 p-5">
+          <form method="post" action="/number_field" novalidate>
+               {% csrf_token %}
+               <div class="container ">
+                    <h3 class="text-center">Enter number for OTP</h3>
+                    {{form|crispy}}
+                    <!-- <p id="err-numb" class="text-danger"></p> -->
+                    <button type="submit" class="btn bg-primary w-100 text-light" id="numb">submit</button>
+               </div>
+          </form>
+     </div>
+
+     <script>
+
+          function checkValid(id) {
+               num = $(id).val()
+               if (/^\d+$/.test(num) == false ) {
+                    let sub = num.substring(0, num.length - 1)
+                    $(id).val(sub)
+               }
+          }
+
+          $("#id_mobile_number").on("keyup", function () {
+               console.log('/')
+               checkValid("#id_mobile_number")
+          })
+     </script>
+
+
+
+     {% include 'userTempl/footer.html' %}
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+          integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+     <a href="#" class="scroll-top">
+          <i class="lni lni-chevron-up"></i>
+     </a>
+     <style>
+          .errorlist li {
+               color: red;
+          }
+     </style>
+
+
+     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+     <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+     <script src="{% static 'userAddon/js/bootstrap.min.js' %}"></script>
+     <script src="{% static 'userAddon/js/tiny-slider.js' %}"></script>
+     <script src="{% static 'userAddon/js/glightbox.min.js' %}"></script>
+     <script src="{% static 'userAddon/js/main.js' %}"></script>
+
+</body>
+
+</html>

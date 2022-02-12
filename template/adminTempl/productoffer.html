@@ -1,0 +1,185 @@
+{% extends "adminTempl/admin_main.html" %}
+{% block content %}
+
+
+
+<section class="row">
+
+    <div class="table-responsive">
+
+
+
+        <div class=" my-3 ">
+
+            <div class="row">
+                <h3 class="h3 text-center col-12">Product offer</h3>
+                <div class="col-md-6 px-5">
+                    <form action="/admin_side/productoffer" method="get" class="d-flex">
+                        <input type="text" name="search" id="" class="form-control">
+                        <button type="submit" class="btn bg-primary text-light ms-2">search</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <table  class="table  table-hover">
+            <thead>
+                <tr>
+                    <th>product  name</th>
+                    <th>offer(%)</th>
+                    <th>set offer</th>
+                    <th>remove offer</th>
+
+
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for i in prod %}
+                <tr>
+                    <td>{{i.product_name}}</td>
+                    
+                    <td>
+                        {% if i.offer %}
+                        {{i.offer}}  
+                        {% else %}
+                        No offer
+                        {% endif %}
+
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary set-offer-btn" data-mdb-toggle="modal"
+                            data-mdb-target="#exampleModal" data-mdb-whatever="@mdo" data-id={{i.id}} data-offer={% if i.offer %}{{i.offer}}{% endif %}>
+                            set
+                        </button>
+                    </td>
+                    <td>
+                        <!-- Button trigger modal -->
+                        {% if i.offer  %}
+
+                        <a class="btn btn-primary" href="/admin_side/addproductoffer?id={{i.id}}">Remove</a>
+                        
+                        {% endif %}
+
+                        <!-- Modal -->
+                    </td>
+
+                    
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="offerforproduct" action="/admin_side/addproductoffer">
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Offer(%)</label>
+                        <input type="text" class="form-control" id="product-offer" placeholder="10%" name="offer" value="" />
+                        <input type="hidden" name="id" value="" id="p-id">
+                        <p id="prod-offer-err"></p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Send message</button>
+                    </div>
+                    
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+ 
+
+<div class="d-flex justify-content-center">
+    <nav aria-label="...">
+        <ul class="pagination">
+         {% if prod.has_previous %}
+          <li class="page-item ">
+            <a class="page-link" href="?page={{prod.previous_page_number}}">prevous</a>
+          </li>
+          {% endif %}
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#">{{prod.number}} <span class="visually-hidden"></span></a>
+          </li>
+          {% if prod.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{prod.next_page_number}}">Next</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      
+</div>
+
+
+
+<script>
+
+    $(".set-offer-btn").on('click', function(){
+
+        $("#p-id").val($(this).attr('data-id'))
+        $("#product-offer").val($(this).attr('data-offer'))
+    })
+
+    $("#offerforproduct").submit((e) => {
+        e.preventDefault()
+        val = $("#product-offer").val()
+        if (val == ""){
+            $("#prod-offer-err").html('fill this field')
+        }else if(/^\d+$/.test(val) == false){
+            $("#prod-offer-err").html('only number allowded')
+        }else if(val < 1){
+            $("#prod-offer-err").html('number must be grater that 0')
+        }else if(val > 100){
+            $("#prod-offer-err").html('number must be less that 100')
+
+        }else{
+            $("#offerforproduct").submit()
+        }
+        
+
+    })
+
+  </script>
+
+{% endblock %}

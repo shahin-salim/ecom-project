@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>SmartShop</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- ========================= CSS here ========================= -->
+    <link rel="stylesheet" href="{% static 'userAddon/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/LineIcons.3.0.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/glightbox.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'userAddon/css/main.css' %}" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+    <!-- Start Header Area -->
+    {% include 'userTempl/header.html' %}
+    <!-- End Header Area -->
+
+
+    {% block content %}
+    {% endblock %}
+
+
+    <!-- Start Footer Area -->
+    {% include 'userTempl/footer.html' %}
+    <!--/ End Footer Area -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+    <!-- ========================= scroll-top ========================= -->
+    <a href="#" class="scroll-top">
+        <i class="lni lni-chevron-up"></i>
+    </a>
+
+    <!-- ========================= JS here ========================= -->
+    <script src="{% static 'userAddon/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'userAddon/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'userAddon/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'userAddon/js/main.js' %}"></script>
+    <script type="text/javascript">
+        //========= Hero Slider 
+        tns({
+            container: '.hero-slider',
+            slideBy: 'page',
+            autoplay: true,
+            autoplayButtonOutput: false,
+            mouseDrag: true,
+            gutter: 0,
+            items: 1,
+            nav: false,
+            controls: true,
+            controlsText: ['<i class="lni lni-chevron-left"></i>', '<i class="lni lni-chevron-right"></i>'],
+        });
+
+        //======== Brand Slider
+        tns({
+            container: '.brands-logo-carousel',
+            autoplay: true,
+            autoplayButtonOutput: false,
+            mouseDrag: true,
+            gutter: 15,
+            nav: false,
+            controls: false,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                540: {
+                    items: 3,
+                },
+                768: {
+                    items: 5,
+                },
+                992: {
+                    items: 6,
+                }
+            }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   
+</body>
+
+</html>
